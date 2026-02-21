@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="KŌDO — A boutique software atelier crafting performant web apps, mobile applications, AI systems, and elegant software with precision.">
+  <title>KŌDO — Software Atelier</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+JP:wght@300;400&family=Space+Mono:ital@0;1&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #0F0E0C;
+      --ink2: #1C1A16;
+      --washi: #F4F1EB;
+      --washi2: #EAE5DA;
+      --cream: #FBF9F4;
+      --hanko: #C0392B;
+      --hanko-dim: rgba(192, 57, 43, 0.12);
+      --gold: #B8933A;
+      --muted: #7A7468;
+      --line: rgba(15, 14, 12, 0.1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: var(--cream);
+      color: var(--ink);
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    @media (hover: none) {
+      body {
+        cursor: auto;
+      }
+
+      .cursor {
+        display: none;
+      }
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: multiply;
+    }
+
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--hanko);
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s;
+    }
+
+    .cursor-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      transition: all 0.18s ease;
+    }
+
+    .cursor-ring.hovered {
+      width: 52px;
+      height: 52px;
+      border-color: var(--hanko);
+    }
+
+    /* GRAIN OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      padding: 28px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      color: var(--hanko);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--hanko);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+      background: var(--ink);
+      padding: 10px 22px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--hanko);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 120px 60px 80px;
+      position: relative;
+    }
+
+    .hero-kana {
+      position: absolute;
+      top: 120px;
+      left: 60px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+      animation: fadeUp 1.2s ease 0.2s both;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--hanko);
+      margin-bottom: 24px;
+      animation: fadeUp 1s ease 0.4s both;
+    }
+
+    .hero-h1 {
+      font-size: clamp(52px, 6vw, 88px);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      animation: fadeUp 1s ease 0.5s both;
+    }
+
+    .hero-h1 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .hero-h1 .accent {
+      color: var(--hanko);
+    }
+
+    .hero-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 340px;
+      margin-top: 36px;
+      animation: fadeUp 1s ease 0.7s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      align-items: center;
+      animation: fadeUp 1s ease 0.9s both;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      text-decoration: none;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--hanko);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+      z-index: -1;
+    }
+
+    .btn-primary:hover::after {
+      transform: scaleX(1);
+    }
+
+    .btn-primary:hover {
+      color: var(--cream);
+    }
+
+    .btn-ghost {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      color: var(--hanko);
+    }
+
+    .btn-ghost svg {
+      transition: transform 0.2s;
+    }
+
+    .btn-ghost:hover svg {
+      transform: translateX(4px);
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+      background: var(--washi);
+    }
+
+    /* HERO VISUAL — abstract geometric composition */
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .geo-canvas {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .geo-circle {
+      position: absolute;
+      border-radius: 50%;
+      animation: breathe 8s ease-in-out infinite;
+    }
+
+    .geo-c1 {
+      width: 380px;
+      height: 380px;
+      border: 1px solid rgba(15, 14, 12, 0.12);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .geo-c2 {
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(15, 14, 12, 0.18);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -2s;
+    }
+
+    .geo-c3 {
+      width: 120px;
+      height: 120px;
+      background: var(--hanko-dim);
+      border: 1px solid var(--hanko);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -4s;
+    }
+
+    .geo-line-v {
+      position: absolute;
+      left: 50%;
+      top: 10%;
+      bottom: 10%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(15, 14, 12, 0.1), transparent);
+    }
+
+    .geo-line-h {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(15, 14, 12, 0.1), transparent);
+    }
+
+    .geo-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--hanko);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .geo-stamp {
+      position: absolute;
+      top: 60px;
+      right: 60px;
+      width: 64px;
+      height: 64px;
+      border: 2px solid var(--hanko);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(12deg);
+    }
+
+    .geo-stamp-inner {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      color: var(--hanko);
+      letter-spacing: 0.1em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .hero-number {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      overflow: hidden;
+      padding: 18px 0;
+      background: var(--washi2);
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 0;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-item {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      white-space: nowrap;
+    }
+
+    .marquee-item::after {
+      content: '◆';
+      color: var(--hanko);
+      font-size: 6px;
+    }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      padding: 120px 60px;
+      gap: 80px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .about-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 6px;
+    }
+
+    .about-label::before {
+      content: '01';
+      display: block;
+      font-size: 36px;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      color: var(--washi2);
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    /* .about-content intentionally unstyled */
+
+    .about-h2 {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 32px;
+    }
+
+    .about-h2 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .about-body {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      line-height: 2;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 60px;
+    }
+
+    /* .stat intentionally unstyled */
+
+    .stat-num {
+      font-size: 48px;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-num span {
+      color: var(--hanko);
+      font-size: 24px;
+    }
+
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* SERVICES */
+    .services {
+      padding: 120px 60px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 80px;
+    }
+
+    .services-h2 {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 300;
+    }
+
+    .services-h2 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .services-kana {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.3em;
+      text-align: right;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .service-card {
+      padding: 48px 40px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+      cursor: pointer;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--ink);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+      z-index: 0;
+    }
+
+    .service-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .service-card:hover .svc-num,
+    .service-card:hover .svc-title,
+    .service-card:hover .svc-body,
+    .service-card:hover .svc-tag {
+      color: var(--cream);
+      opacity: 1;
+    }
+
+    .service-card:hover .svc-icon {
+      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--cream);
+    }
+
+    .service-card:hover .svc-arrow {
+      color: var(--hanko);
+    }
+
+    .service-card>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    .svc-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      margin-bottom: 32px;
+      display: block;
+      transition: color 0.3s;
+    }
+
+    .svc-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      font-size: 20px;
+      transition: all 0.3s;
+    }
+
+    .svc-title {
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      transition: color 0.3s;
+    }
+
+    .svc-body {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 28px;
+      transition: color 0.3s;
+    }
+
+    .svc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+
+    .svc-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .svc-arrow {
+      font-size: 18px;
+      color: var(--muted);
+      transition: color 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+
+    .service-card:hover .svc-arrow {
+      transform: translate(6px, -6px);
+    }
+
+    /* PROCESS */
+    .process {
+      padding: 120px 60px;
+      background: var(--ink);
+      color: var(--cream);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .process-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(244, 241, 235, 0.4);
+      margin-bottom: 60px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .process-label::before {
+      content: '03';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      color: var(--hanko);
+    }
+
+    .process-h2 {
+      font-size: clamp(36px, 4vw, 64px);
+      font-weight: 300;
+      margin-bottom: 80px;
+      line-height: 1.1;
+    }
+
+    .process-h2 em {
+      font-style: italic;
+      color: rgba(244, 241, 235, 0.4);
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .step {
+      padding: 0 40px 48px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+    }
+
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      font-weight: 300;
+      color: rgba(244, 241, 235, 0.06);
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 300;
+      margin-bottom: 14px;
+    }
+
+    .step-body {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      line-height: 1.9;
+      color: rgba(244, 241, 235, 0.45);
+    }
+
+    .step-accent {
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--hanko);
+      margin-bottom: 20px;
+    }
+
+    /* WORK / PORTFOLIO PREVIEW */
+    .work {
+      padding: 120px 60px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .work-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+    }
+
+    .work-h2 {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 300;
+    }
+
+    .work-h2 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .view-all {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    .view-all:hover {
+      color: var(--hanko);
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .work-item {
+      background: var(--cream);
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: background 0.4s;
+    }
+
+    .work-item:hover {
+      background: var(--washi);
+    }
+
+    .work-item-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      transition: opacity 0.4s;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 180px;
+      font-weight: 400;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .work-item:hover .work-item-bg {
+      opacity: 0.07;
+    }
+
+    .work-item.featured {
+      grid-row: span 2;
+    }
+
+    .work-cat {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--hanko);
+      margin-bottom: 12px;
+    }
+
+    .work-name {
+      font-size: 28px;
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    .work-desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .work-arrow {
+      position: absolute;
+      top: 40px;
+      right: 48px;
+      font-size: 24px;
+      color: var(--muted);
+      transition: all 0.3s;
+    }
+
+    .work-item:hover .work-arrow {
+      color: var(--hanko);
+      transform: translate(4px, -4px);
+    }
+
+    /* CONTACT */
+    .contact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+
+    .contact-left {
+      background: var(--washi);
+      padding: 100px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--line);
+    }
+
+    .contact-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+
+    .contact-h2 {
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .contact-h2 em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .contact-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      line-height: 2;
+      color: var(--muted);
+      margin-bottom: 48px;
+    }
+
+    .contact-email {
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--hanko);
+      text-decoration: none;
+      border-bottom: 1px solid var(--hanko);
+      padding-bottom: 4px;
+      transition: opacity 0.2s;
+    }
+
+    .contact-email:hover {
+      opacity: 0.7;
+    }
+
+    .contact-email--linkedin {
+      margin-top: 16px;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    .contact-right {
+      padding: 100px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-group {
+      margin-bottom: 28px;
+    }
+
+    .form-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--hanko);
+    }
+
+    .form-textarea {
+      resize: none;
+      height: 80px;
+    }
+
+    .form-select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-submit {
+      margin-top: 12px;
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 18px 40px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+
+    .form-submit:hover {
+      background: var(--hanko);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink2);
+      color: rgba(244, 241, 235, 0.5);
+      padding: 48px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      color: var(--cream);
+      letter-spacing: 0.2em;
+    }
+
+    .footer-logo span {
+      color: var(--hanko);
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: rgba(244, 241, 235, 0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--hanko);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      50% {
+        transform: translate(-50%, -50%) scale(1.04);
+      }
+    }
+
+    @keyframes marquee {
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* SCROLL REVEALS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-d1 {
+      transition-delay: 0.1s;
+    }
+
+    .reveal-d2 {
+      transition-delay: 0.2s;
+    }
+
+    .reveal-d3 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-d4 {
+      transition-delay: 0.4s;
+    }
+
+    .reveal-d5 {
+      transition-delay: 0.5s;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      nav {
+        padding: 24px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-right {
+        height: 50vw;
+      }
+
+      .hero-left {
+        padding: 100px 24px 60px;
+      }
+
+      .about {
+        grid-template-columns: 1fr;
+        padding: 80px 24px;
+        gap: 40px;
+      }
+
+      .services {
+        padding: 80px 24px;
+      }
+
+      .services-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process {
+        padding: 80px 24px;
+      }
+
+      .process-steps {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .work {
+        padding: 80px 24px;
+      }
+
+      .work-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-item.featured {
+        grid-row: auto;
+      }
+
+      .contact {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-left,
+      .contact-right {
+        padding: 60px 24px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding: 40px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-ring" id="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">KŌ<span>◆</span>DO</a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Begin Project</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-kana">ソフトウェア・アトリエ</div>
+      <div class="hero-eyebrow">Software Atelier — Est. 2019</div>
+      <h1 class="hero-h1">
+        We craft<br>
+        <em>software</em><br>
+        with <span class="accent">precision.</span>
+      </h1>
+      <p class="hero-sub">Full-spectrum software services — from elegant interfaces to robust systems architecture.
+        Every pixel, every line, purposeful.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">Explore Services</a>
+        <a href="#work" class="btn-ghost">
+          View Work
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 13L13 3M13 3H7M13 3V9" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-visual">
+        <div class="geo-canvas">
+          <div class="geo-line-v"></div>
+          <div class="geo-line-h"></div>
+          <div class="geo-circle geo-c1"></div>
+          <div class="geo-circle geo-c2"></div>
+          <div class="geo-circle geo-c3"></div>
+          <div class="geo-dot"></div>
+          <div class="geo-stamp">
+            <div class="geo-stamp-inner">コード<br>品質</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-number">00 — 01</div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <div class="marquee-item">Web Development</div>
+      <div class="marquee-item">Mobile Apps</div>
+      <div class="marquee-item">UI/UX Design</div>
+      <div class="marquee-item">Cloud Solutions</div>
+      <div class="marquee-item">API Integration</div>
+      <div class="marquee-item">AI & Machine Learning</div>
+      <div class="marquee-item">DevOps & Infra</div>
+      <div class="marquee-item">SaaS Products</div>
+      <div class="marquee-item">Web Development</div>
+      <div class="marquee-item">Mobile Apps</div>
+      <div class="marquee-item">UI/UX Design</div>
+      <div class="marquee-item">Cloud Solutions</div>
+      <div class="marquee-item">API Integration</div>
+      <div class="marquee-item">AI & Machine Learning</div>
+      <div class="marquee-item">DevOps & Infra</div>
+      <div class="marquee-item">SaaS Products</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-label reveal">About</div>
+    <div class="about-content">
+      <h2 class="about-h2 reveal">
+        Built on the belief that<br><em>great software</em><br>is invisible.
+      </h2>
+      <p class="about-body reveal reveal-d1">
+        We are a boutique software atelier — small by design, exceptional by discipline. Our team of engineers and
+        designers believes that the best technology disappears into the experience, leaving only clarity and delight. We
+        work with founders, enterprises, and innovators who demand craft over commodity.
+      </p>
+      <div class="stats-row">
+        <div class="stat reveal reveal-d2">
+          <div class="stat-num">80<span>+</span></div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div class="stat reveal reveal-d3">
+          <div class="stat-num">6<span>yr</span></div>
+          <div class="stat-label">In Practice</div>
+        </div>
+        <div class="stat reveal reveal-d4">
+          <div class="stat-num">99<span>%</span></div>
+          <div class="stat-label">Client Retention</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="services-header">
+      <h2 class="services-h2 reveal">Our <em>services</em></h2>
+      <div class="services-kana reveal">サービス</div>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <span class="svc-num">— 01</span>
+        <div class="svc-icon">⬡</div>
+        <div class="svc-title">Web Development</div>
+        <p class="svc-body">Performant, scalable web applications built with modern frameworks. From landing pages to
+          complex SaaS platforms.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">React</span>
+          <span class="svc-tag">Next.js</span>
+          <span class="svc-tag">Vue</span>
+          <span class="svc-tag">Node.js</span>
+        </div>
+        <span class="svc-arrow">↗</span>
+      </div>
+
+      <div class="service-card reveal reveal-d1">
+        <span class="svc-num">— 02</span>
+        <div class="svc-icon">◎</div>
+        <div class="svc-title">Mobile Applications</div>
+        <p class="svc-body">Native and cross-platform mobile experiences for iOS and Android. Smooth, intuitive, built
+          to last.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">Swift</span>
+          <span class="svc-tag">Kotlin</span>
+          <span class="svc-tag">Flutter</span>
+          <span class="svc-tag">React Native</span>
+        </div>
+        <span class="svc-arrow">↗</span>
+      </div>
+
+      <div class="service-card reveal reveal-d2">
+        <span class="svc-num">— 03</span>
+        <div class="svc-icon">△</div>
+        <div class="svc-title">UI/UX Design</div>
+        <p class="svc-body">Design systems and user experiences grounded in research and refined by taste. Beautiful and
+          measurably effective.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">Figma</span>
+          <span class="svc-tag">Prototyping</span>
+          <span class="svc-tag">Design Systems</span>
+        </div>
+        <span class="svc-arrow">↗</span>
+      </div>
+
+      <div class="service-card reveal reveal-d1">
+        <span class="svc-num">— 04</span>
+        <div class="svc-icon">⊞</div>
+        <div class="svc-title">Cloud & DevOps</div>
+        <p class="svc-body">Infrastructure that scales with your ambition. CI/CD pipelines, cloud architecture, and
+          deployment automation.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">AWS</span>
+          <span class="svc-tag">GCP</span>
+          <span class="svc-tag">Docker</span>
+          <span class="svc-tag">Kubernetes</span>
+        </div>
+        <span class="svc-arrow">↗</span>
+      </div>
+
+      <div class="service-card reveal reveal-d2">
+        <span class="svc-num">— 05</span>
+        <div class="svc-icon">⟡</div>
+        <div class="svc-title">AI & Machine Learning</div>
+        <p class="svc-body">Intelligent systems that learn, predict, and automate. From LLM integrations to custom model
+          training and deployment.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">Python</span>
+          <span class="svc-tag">TensorFlow</span>
+          <span class="svc-tag">OpenAI</span>
+          <span class="svc-tag">LangChain</span>
+        </div>
+        <span class="svc-arrow">↗</span>
+      </div>
+
+      <div class="service-card reveal reveal-d3">
+        <span class="svc-num">— 06</span>
+        <div class="svc-icon">◈</div>
+        <div class="svc-title">API & Integration</div>
+        <p class="svc-body">Robust APIs and third-party integrations that connect your ecosystem. RESTful, GraphQL,
+          webhooks, and beyond.</p>
+        <div class="svc-tags">
+          <span class="svc-tag">REST</span>
+          <span class="svc-tag">GraphQL</span>
+          <span class="svc-tag">Microservices</span>
+        </div>
+        <span class="svc-arrow">↗</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="process-label">Our Process</div>
+    <h2 class="process-h2 reveal">How we <em>work</em></h2>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-accent"></div>
+        <div class="step-title">Discover</div>
+        <p class="step-body">Deep-dive into your goals, constraints, and context. We ask hard questions and listen
+          harder.</p>
+      </div>
+      <div class="step reveal reveal-d1">
+        <div class="step-num">02</div>
+        <div class="step-accent"></div>
+        <div class="step-title">Architect</div>
+        <p class="step-body">Design systems and technical blueprints that solve the right problems with elegant
+          solutions.</p>
+      </div>
+      <div class="step reveal reveal-d2">
+        <div class="step-num">03</div>
+        <div class="step-accent"></div>
+        <div class="step-title">Build</div>
+        <p class="step-body">Iterative development in tight cycles with full transparency. No surprises, only progress.
+        </p>
+      </div>
+      <div class="step reveal reveal-d3">
+        <div class="step-num">04</div>
+        <div class="step-accent"></div>
+        <div class="step-title">Refine</div>
+        <p class="step-body">Testing, polish, and launch — followed by ongoing support to ensure your product thrives.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work" id="work">
+    <div class="work-header">
+      <h2 class="work-h2 reveal">Selected <em>work</em></h2>
+      <a href="#" class="view-all reveal">All Projects ↗</a>
+    </div>
+    <div class="work-grid">
+      <div class="work-item featured reveal">
+        <div class="work-item-bg">製品</div>
+        <div class="work-arrow">↗</div>
+        <div class="work-cat">SaaS Platform</div>
+        <div class="work-name">Meridian Analytics</div>
+        <div class="work-desc">End-to-end data platform for logistics companies. Real-time dashboards, predictive
+          routing, mobile-first.</div>
+      </div>
+      <div class="work-item reveal reveal-d1">
+        <div class="work-item-bg">設計</div>
+        <div class="work-arrow">↗</div>
+        <div class="work-cat">Mobile App</div>
+        <div class="work-name">Forma Health</div>
+        <div class="work-desc">iOS wellness app with AI coaching and wearable sync.</div>
+      </div>
+      <div class="work-item reveal reveal-d2">
+        <div class="work-item-bg">構築</div>
+        <div class="work-arrow">↗</div>
+        <div class="work-cat">E-Commerce</div>
+        <div class="work-name">Kura Market</div>
+        <div class="work-desc">Headless commerce with custom CMS and 3x conversion lift.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-left">
+      <div class="contact-label">04 — Contact</div>
+      <h2 class="contact-h2 reveal">
+        Start a<br><em>conversation.</em>
+      </h2>
+      <p class="contact-sub reveal">
+        Every great product begins with a brief. Tell us what you're building — we'll tell you how we can help.
+      </p>
+      <a href="mailto:hello@kodo.studio" class="contact-email reveal">hello@kodo.studio</a>
+      <a href="https://www.linkedin.com/in/raghav-9a8760333" target="_blank" rel="noopener noreferrer"
+        class="contact-email contact-email--linkedin reveal">LinkedIn Profile ↗</a>
+    </div>
+    <div class="contact-right">
+      <form onsubmit="handleSubmit(event)">
+        <div class="form-group reveal">
+          <label class="form-label" for="name">Your Name</label>
+          <input class="form-input" id="name" type="text" placeholder="Yuki Tanaka" required />
+        </div>
+        <div class="form-group reveal reveal-d1">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" id="email" type="email" placeholder="you@company.com" required />
+        </div>
+        <div class="form-group reveal reveal-d2">
+          <label class="form-label" for="service">Service Needed</label>
+          <select class="form-select" id="service">
+            <option value="">Select a service</option>
+            <option>Web Development</option>
+            <option>Mobile Application</option>
+            <option>UI/UX Design</option>
+            <option>Cloud &amp; DevOps</option>
+            <option>AI &amp; Machine Learning</option>
+            <option>API &amp; Integration</option>
+            <option>Full Spectrum</option>
+          </select>
+        </div>
+        <div class="form-group reveal reveal-d3">
+          <label class="form-label" for="brief">Brief</label>
+          <textarea class="form-textarea" id="brief" placeholder="Describe your project in a few sentences..."
+            required></textarea>
+        </div>
+        <button class="form-submit reveal reveal-d4" type="submit">Send Brief →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">KŌ<span>◆</span>DO</div>
+    <div class="footer-copy">© 2026 Kōdo Studio. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Twitter</a>
+      <a href="https://www.linkedin.com/in/raghav-9a8760333" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="#">GitHub</a>
+      <a href="#">Dribbble</a>
+    </div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+    function animCursor() {
+      rx += (mx - rx) * 0.15;
+      ry += (my - ry) * 0.15;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+      ring.style.left = (rx - mx) + 'px';
+      ring.style.top = (ry - my) + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+
+    document.querySelectorAll('a, button, .service-card, .work-item').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+    });
+
+    // SCROLL REVEAL
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+
+    // FORM
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit');
+      btn.textContent = 'Sent ✓'; btn.style.background = '#2D5016';
+      setTimeout(() => { btn.textContent = 'Send Brief →'; btn.style.background = ''; e.target.reset(); }, 3000);
+    }
+  </script>
+</body>
+
+</html>
