@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Japanese Music Player</string>
+
+    <!-- Player Screen -->
+    <string name="no_song_playing">No song playing</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="album_art">Album Art</string>
+
+    <!-- Library Screen -->
+    <string name="music_library">Music Library</string>
+    <string name="search_hint">Search songs, artists, albums</string>
+    <string name="no_songs_found">No songs found</string>
+    <string name="no_matching_songs">No matching songs</string>
+
+    <!-- Navigation -->
+    <string name="nav_player">Player</string>
+    <string name="nav_library">Library</string>
+
+    <!-- Permissions -->
+    <string name="permission_required">Permission Required</string>
+    <string name="permission_message">This app needs permission to access your music files</string>
+</resources>

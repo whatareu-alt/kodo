@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#F5F5F0</color>
+    <string name="album_art">Album Art</string>
+    <string name="app_name">Japanese Music Player</string>
+    <string name="music_library">Music Library</string>
+    <string name="nav_library">Library</string>
+    <string name="nav_player">Player</string>
+    <string name="next">Next</string>
+    <string name="no_matching_songs">No matching songs</string>
+    <string name="no_song_playing">No song playing</string>
+    <string name="no_songs_found">No songs found</string>
+    <string name="pause">Pause</string>
+    <string name="permission_message">This app needs permission to access your music files</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="play">Play</string>
+    <string name="previous">Previous</string>
+    <string name="search_hint">Search songs, artists, albums</string>
+    <style name="Base.Theme.JapaneseMusicPlayer" parent="android:Theme.Material.Light.NoActionBar">
+        
+    </style>
+    <style name="Theme.JapaneseMusicPlayer" parent="Base.Theme.JapaneseMusicPlayer"/>
+</resources>

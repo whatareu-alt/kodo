@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Professional software developer offering web, mobile, and full-stack software services — crafted with precision and passion." />
+    <title>Raghav Dev Studio | Software Services</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- Cherry Blossom Canvas -->
+    <canvas id="sakura-canvas"></canvas>
+
+    <!-- 3D Mountain Canvas -->
+    <canvas id="mountain-canvas"></canvas>
+
+    <!-- Overlay gradient -->
+    <div class="overlay"></div>
+
+    <!-- ========== NAV ========== -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="logo">
+                <span class="logo-jp">桜</span>
+                <span class="logo-text">Raghav<span class="logo-accent">Dev</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+                    <span class="theme-icon theme-icon-dark">🌙</span>
+                    <span class="theme-icon theme-icon-light">☀️</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <ul>
+            <li><a href="#hero" onclick="closeMobileMenu()">Home</a></li>
+            <li><a href="#services" onclick="closeMobileMenu()">Services</a></li>
+            <li><a href="#about" onclick="closeMobileMenu()">About</a></li>
+            <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Software Development Studio</div>
+            <h1 class="hero-title">
+                Crafting Digital<br />
+                <span class="title-accent">Experiences</span>
+            </h1>
+            <p class="hero-sub">
+                Full-stack software development — websites, mobile apps, APIs, and beyond.<br />
+                Built with precision. Delivered with purpose.
+            </p>
+            <div class="hero-btns">
+                <a href="#services" class="btn btn-primary">Explore Services</a>
+                <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========== SERVICES ========== -->
+    <section id="services">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">What I Build</span>
+                <h2 class="section-title">Services</h2>
+                <p class="section-desc">End-to-end software solutions tailored to your business needs.</p>
+            </div>
+            <div class="services-grid">
+
+                <div class="service-card" data-delay="0">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2" />
+                            <path d="M8 21h8M12 17v4" />
+                        </svg>
+                    </div>
+                    <h3>Web Development</h3>
+                    <p>Responsive, fast, and beautiful websites — from landing pages to full-featured web apps using
+                        React, Next.js, and more.</p>
+                    <div class="card-tags">
+                        <span>React</span><span>Next.js</span><span>Node.js</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-delay="100">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="5" y="2" width="14" height="20" rx="2" />
+                            <line x1="12" y1="18" x2="12.01" y2="18" />
+                        </svg>
+                    </div>
+                    <h3>Mobile App Development</h3>
+                    <p>Cross-platform and native mobile apps for Android & iOS — clean, performant, and user-focused
+                        with Flutter or React Native.</p>
+                    <div class="card-tags">
+                        <span>Flutter</span><span>React Native</span><span>Android</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-delay="200">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        </svg>
+                    </div>
+                    <h3>Backend & API</h3>
+                    <p>Robust server-side architecture, REST & GraphQL APIs, databases, authentication, and cloud
+                        infrastructure.</p>
+                    <div class="card-tags">
+                        <span>Node.js</span><span>Firebase</span><span>PostgreSQL</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-delay="300">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <path
+                                d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                    </div>
+                    <h3>UI/UX Design</h3>
+                    <p>Pixel-perfect interfaces designed for engagement and usability — from wireframes to fully
+                        interactive prototypes in Figma.</p>
+                    <div class="card-tags">
+                        <span>Figma</span><span>Design Systems</span><span>Prototyping</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-delay="400">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                        </svg>
+                    </div>
+                    <h3>Custom Software</h3>
+                    <p>Bespoke solutions built from scratch — automation tools, SaaS platforms, dashboards, ERP systems,
+                        and internal tools.</p>
+                    <div class="card-tags">
+                        <span>Python</span><span>Java</span><span>Spring Boot</span>
+                    </div>
+                </div>
+
+                <div class="service-card" data-delay="500">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                    </div>
+                    <h3>Consulting & Review</h3>
+                    <p>Code reviews, architecture consulting, performance optimization, and technical roadmap planning
+                        for your team.</p>
+                    <div class="card-tags">
+                        <span>Code Review</span><span>Architecture</span><span>Strategy</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about">
+        <div class="section-inner about-inner">
+            <div class="about-text">
+                <span class="section-tag">Who I Am</span>
+                <h2 class="section-title">About</h2>
+                <p>I'm a passionate software developer with expertise across the full technology stack. I believe in
+                    creating software that is not only functional but also elegant — minimal in complexity, maximal in
+                    impact.</p>
+                <p>Every project is an opportunity to craft something meaningful. From concept to deployment, I handle
+                    every step with care, precision, and a deep commitment to quality.</p>
+                <div class="about-stats">
+                    <div class="stat">
+                        <span class="stat-num">50+</span>
+                        <span class="stat-label">Projects Delivered</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">5+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">100%</span>
+                        <span class="stat-label">Client Satisfaction</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="about-visuals">
+                <div class="tech-orb">
+                    <div class="orb-ring ring-1"></div>
+                    <div class="orb-ring ring-2"></div>
+                    <div class="orb-ring ring-3"></div>
+                    <div class="orb-center">
+                        <span>Full</span>
+                        <span>Stack</span>
+                    </div>
+                    <div class="orb-icons">
+                        <span class="orb-icon orb-icon-0">⚛️</span>
+                        <span class="orb-icon orb-icon-1">📱</span>
+                        <span class="orb-icon orb-icon-2">🌐</span>
+                        <span class="orb-icon orb-icon-3">🔧</span>
+                        <span class="orb-icon orb-icon-4">☁️</span>
+                        <span class="orb-icon orb-icon-5">🛡️</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT ========== -->
+    <section id="contact">
+        <div class="section-inner">
+            <div class="section-header">
+                <span class="section-tag">Let's Work Together</span>
+                <h2 class="section-title">Contact</h2>
+                <p class="section-desc">Have a project in mind? Let's build something great together.</p>
+            </div>
+            <div class="contact-wrapper">
+                <form id="contact-form" class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Raghav Sharma" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="hello@example.com" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Needed</label>
+                        <select id="service" name="service">
+                            <option value="">Select a service...</option>
+                            <option>Web Development</option>
+                            <option>Mobile App Development</option>
+                            <option>Backend & API</option>
+                            <option>UI/UX Design</option>
+                            <option>Custom Software</option>
+                            <option>Consulting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Project Details</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Describe your project idea..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="submit-btn">
+                        <span id="btn-text">Send Message</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                    </button>
+                    <div class="form-success" id="form-success">
+                        ✅ Message sent! I'll get back to you within 24 hours.
+                    </div>
+                </form>
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <div>
+                            <strong>Email</strong>
+                            <span>hello@raghavdev.com</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">💬</div>
+                        <div>
+                            <strong>WhatsApp / Telegram</strong>
+                            <span>+91 XXXXX XXXXX</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🕐</div>
+                        <div>
+                            <strong>Response Time</strong>
+                            <span>Within 24 hours</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌏</div>
+                        <div>
+                            <strong>Available For</strong>
+                            <span>Remote projects worldwide</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <span class="logo-jp">桜</span>
+                <span class="logo-text">Raghav<span class="logo-accent">Dev</span></span>
+            </div>
+            <p class="footer-copy">© 2026 RaghavDev Studio. Crafted with passion & precision.</p>
+            <p class="footer-jp">品質第一 — Quality First</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

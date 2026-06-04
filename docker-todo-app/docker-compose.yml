@@ -1,0 +1,38 @@
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine # Official Postgres image (lightweight alpine variant)
+    container_name: todo_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Named volume = data persists across restarts
+    ports:
+      - "5432:5432" # Expose for optional local DB client access
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Node.js API ──────────────────────────────────────────────────────
+  app:
+    build:
+      context: . # Build from the Dockerfile in the current directory
+      dockerfile: Dockerfile
+    container_name: todo_app
+    restart: unless-stopped
+    env_file: .env # Load all variables from .env file
+    ports:
+      - "3000:3000" # Map host port 3000 → container port 3000
+    depends_on:
+      db:
+        condition: service_healthy # Wait until db passes its healthcheck
+
+# ── Named Volumes ────────────────────────────────────────────────────
+volumes:
+  postgres_data: # Docker manages this volume; data survives `docker compose down`
