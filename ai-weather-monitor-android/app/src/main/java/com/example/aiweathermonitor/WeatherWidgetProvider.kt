@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import kotlinx.serialization.json.Json
+import com.example.aiweathermonitor.config.WeatherApiConfig
 
 class WeatherWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(
