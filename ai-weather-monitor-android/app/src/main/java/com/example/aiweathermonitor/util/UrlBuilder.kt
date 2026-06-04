@@ -15,9 +15,12 @@ class SafeUrlBuilder(private val baseUrl: String) {
 
     /**
      * Adds a query parameter with safe encoding.
+     * Skips empty values to avoid malformed URLs.
      */
     fun addParam(key: String, value: String): SafeUrlBuilder {
-        queryParams[key] = URLEncoder.encode(value, "UTF-8")
+        if (value.isNotBlank()) {
+            queryParams[key] = URLEncoder.encode(value, "UTF-8")
+        }
         return this
     }
 
@@ -90,8 +93,10 @@ object UrlBuilder {
         return SafeUrlBuilder(WeatherApiConfig.Endpoints.OPEN_METEO_FORECAST)
             .addParam("latitude", latitude)
             .addParam("longitude", longitude)
-            .addParam("hourly", if (hourly) "temperature_2m,weather_code" else "")
-            .addParam("daily", if (daily) "temperature_2m_max,temperature_2m_min,weather_code" else "")
+            .apply {
+                if (hourly) addParam("hourly", "temperature_2m,weather_code")
+                if (daily) addParam("daily", "temperature_2m_max,temperature_2m_min,weather_code")
+            }
             .addParam("timezone", "auto")
             .build()
     }

@@ -14,8 +14,8 @@ class WeatherWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        val sharedPrefs = context.getSharedPreferences("weather_cache_prefs", Context.MODE_PRIVATE)
-        val jsonStr = sharedPrefs.getString("cached_weather_state", null)
+        val sharedPrefs = context.getSharedPreferences(WeatherApiConfig.SharedPrefsKeys.PREFS_NAME, Context.MODE_PRIVATE)
+        val jsonStr = sharedPrefs.getString(WeatherApiConfig.SharedPrefsKeys.WEATHER_STATE_KEY, null)
         val jsonParser = Json { ignoreUnknownKeys = true }
 
         val state = try {
@@ -24,7 +24,11 @@ class WeatherWidgetProvider : AppWidgetProvider() {
             } else {
                 null
             }
+        } catch (e: kotlinx.serialization.SerializationException) {
+            android.util.Log.w("WeatherWidget", "Cached weather state is corrupted")
+            null
         } catch (e: Exception) {
+            android.util.Log.e("WeatherWidget", "Failed to load cached weather state: ${e.message}", e)
             null
         }
 

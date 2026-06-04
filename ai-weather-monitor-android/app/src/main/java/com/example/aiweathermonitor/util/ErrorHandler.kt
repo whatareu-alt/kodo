@@ -49,10 +49,10 @@ object ErrorHandler {
         return when {
             isNetworkError(exception) -> WeatherApiConfig.ErrorMessages.ERROR_NO_INTERNET
             isConfigurationError(exception) -> WeatherApiConfig.ErrorMessages.ERROR_INVALID_API_KEY
-            exception.message?.contains("timeout", ignoreCase = true) == true -> 
+            exception.message?.contains("timeout", ignoreCase = true) ?: false -> 
                 WeatherApiConfig.ErrorMessages.ERROR_TIMEOUT
-            exception.message?.contains("500") == true ||
-            exception.message?.contains("503") == true ->
+            (exception.message?.contains("500") ?: false) ||
+            (exception.message?.contains("503") ?: false) ->
                 WeatherApiConfig.ErrorMessages.ERROR_SERVER
             isDataError(exception) -> WeatherApiConfig.ErrorMessages.ERROR_INVALID_DATA
             else -> exception.message ?: "An unexpected error occurred"

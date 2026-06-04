@@ -104,15 +104,19 @@ class MainScreenViewModel(
                 setPackage(context.packageName)
             }
             context.sendBroadcast(intent) // NOSONAR
+        } catch (e: java.io.IOException) {
+            AppLogger.error("IO error saving weather state: ${e.message}", TAG, e)
+        } catch (e: kotlinx.serialization.SerializationException) {
+            AppLogger.error("Serialization error saving weather state: ${e.message}", TAG, e)
         } catch (e: Exception) {
-            AppLogger.error("Failed to save weather state or broadcast widget update", TAG, e)
+            AppLogger.error("Failed to save weather state or broadcast widget update: ${e.message}", TAG, e)
         }
     }
 
     private fun loadStateFromPrefs(context: android.content.Context): WeatherState? {
         return try {
             val sharedPrefs = context.getSharedPreferences(WeatherApiConfig.SharedPrefsKeys.PREFS_NAME, android.content.Context.MODE_PRIVATE)
-            val jsonStr = sharedPrefs.getString("cached_weather_state", null)
+            val jsonStr = sharedPrefs.getString(WeatherApiConfig.SharedPrefsKeys.WEATHER_STATE_KEY, null)
             if (!jsonStr.isNullOrBlank()) {
                 val decoded = jsonParser.decodeFromString(WeatherState.serializer(), jsonStr)
                 decoded.copy(
@@ -127,7 +131,11 @@ class MainScreenViewModel(
             } else {
                 null
             }
+        } catch (e: kotlinx.serialization.SerializationException) {
+            AppLogger.debug("Cached weather state is corrupted, clearing cache", TAG)
+            null
         } catch (e: Exception) {
+            AppLogger.warning("Failed to load cached weather state", TAG, e)
             null
         }
     }
@@ -154,7 +162,7 @@ class MainScreenViewModel(
             _weatherState.value = _weatherState.value.copy(isSearching = true)
             try {
                 val results = withContext(ioDispatcher) {
-                    val url = "https://geocoding-api.open-meteo.com/v1/search?name=$query&count=10"
+                    val url = UrlBuilder.openMeteoSearch(query, WeatherApiConfig.SEARCH_RESULT_LIMIT)
                     val request = Request.Builder().url(url).build()
                     client.newCall(request).execute().use { response ->
                         if (!response.isSuccessful) throw Exception("Search failed: ${response.code}")
@@ -183,7 +191,7 @@ class MainScreenViewModel(
                 } else {
                     ErrorHandler.getFriendlyErrorMessage(e)
                 }
-                AppLogger.error("Failed to search cities", TAG, e)
+                AppLogger.error("Failed to search cities: ${e.javaClass.simpleName}", TAG, e)
                 _weatherState.value = _weatherState.value.copy(
                     isSearching = false,
                     errorMessage = friendlyError
@@ -254,7 +262,11 @@ class MainScreenViewModel(
                 "Sunday" -> "Sun"
                 else -> fullDay.substring(0, 3)
             }
+        } catch (e: java.text.ParseException) {
+            AppLogger.debug("Failed to parse date: $dateStr", TAG)
+            return dateStr
         } catch (e: Exception) {
+            AppLogger.warning("Unexpected error parsing date: $dateStr", TAG, e)
             return dateStr
         }
     }

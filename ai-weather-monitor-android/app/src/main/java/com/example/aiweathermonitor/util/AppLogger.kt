@@ -1,6 +1,7 @@
 package com.example.aiweathermonitor.util
 
 import android.util.Log
+import com.example.aiweathermonitor.exception.WeatherException
 
 /**
  * Centralized logging utility for the application.
@@ -52,5 +53,40 @@ object AppLogger {
      */
     fun exception(tag: String = TAG, throwable: Throwable) {
         Log.e(tag, "Exception occurred: ${throwable.message}", throwable)
+    }
+
+    /**
+     * Logs a weather-related exception with structured information.
+     */
+    fun logWeatherException(tag: String, message: String, exception: WeatherException) {
+        val errorDetails = """
+            |Error: $message
+            |Type: ${exception.javaClass.simpleName}
+            |Cause: ${exception.cause?.javaClass?.simpleName ?: "None"}
+            |Message: ${exception.message}
+        """.trimMargin()
+        Log.e(tag, errorDetails, exception)
+    }
+
+    /**
+     * Logs network request details for debugging.
+     */
+    fun logNetworkRequest(tag: String, url: String, method: String = "GET") {
+        Log.d(tag, "→ $method $url")
+    }
+
+    /**
+     * Logs network response details for debugging.
+     */
+    fun logNetworkResponse(tag: String, statusCode: Int, responseTime: Long) {
+        Log.d(tag, "← HTTP $statusCode (${responseTime}ms)")
+    }
+
+    /**
+     * Logs data parsing operations.
+     */
+    fun logDataParsing(tag: String, dataType: String, successful: Boolean) {
+        val status = if (successful) "✓" else "✗"
+        Log.d(tag, "$status Parsing $dataType")
     }
 }

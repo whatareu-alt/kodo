@@ -43,6 +43,19 @@ class NetworkConnectivityObserver(context: Context) {
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     /**
+     * Check if ACCESS_NETWORK_STATE permission is granted.
+     * Required for Android 6.0+ (API 23+)
+     */
+    private fun hasNetworkStatePermission(context: Context): Boolean {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            val permission = android.Manifest.permission.ACCESS_NETWORK_STATE
+            context.checkSelfPermission(permission) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        } else {
+            true  // Permissions auto-granted on pre-Marshmallow
+        }
+    }
+
+    /**
      * Observable Flow of network connectivity state.
      * 
      * **Emissions:**
@@ -60,6 +73,11 @@ class NetworkConnectivityObserver(context: Context) {
      * - Stops monitoring when all collectors unsubscribe
      */
     val isConnected: Flow<Boolean> = callbackFlow {
+        // Get initial state BEFORE registering callback to avoid race condition
+        val activeNetwork = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        val isInitiallyConnected = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
@@ -77,11 +95,8 @@ class NetworkConnectivityObserver(context: Context) {
             .build()
 
         connectivityManager.registerNetworkCallback(request, callback)
-
-        // Send initial state
-        val activeNetwork = connectivityManager.activeNetwork
-        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
-        val isInitiallyConnected = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        
+        // Send initial state after registering to ensure we catch any changes
         trySend(isInitiallyConnected)
 
         awaitClose {
